@@ -37,3 +37,30 @@ if ! command -v crontab &> /dev/null; then
 else
     echo -e "[${Green}OK${Color_Off}] Crontab already installed."
 fi
+
+# Install Python3 to run python script
+echo -e "${Yellow}[=================> Python3 Installation <=================]${Color_Off}"
+
+if ! command -v python3 &> /dev/null; then
+
+    # Arch Linux installation handling
+    if command -v pacman &> /dev/null; then
+        pacman -Sy python --noconfirm
+    # Ubuntu installation handling
+    elif command -v apt-get &> /dev/null; then
+        apt-get update
+        apt-get install python3
+    else
+        echo -e "[${Red}KO${Color_Off}] Python3 installation failed due to package manager."
+        exit 1
+    fi
+
+    # Handle Python3 installation state
+    if command -v python3 &> /dev/null; then
+        echo -e "[${Green}OK${Color_Off}] Python3 installation."
+    else
+        echo -e "[${Red}KO${Color_Off}] Python3 installation failed."
+    fi
+else
+    echo -e "[${Green}OK${Color_Off}] Python3 already installed."
+fi
