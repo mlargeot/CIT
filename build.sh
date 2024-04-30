@@ -77,3 +77,19 @@ if [ ! -d "$APP_DIR" ]; then
 else
     echo -e "[${Green}OK${Color_Off}] ${APP_DIR} directory already exists."
 fi
+
+# Cron job setup for script that will run every 5 minutes
+echo -e "${Yellow}[=================> Setting up Cron Job for script <=================]${Color_Off}"
+if command -v crontab &> /dev/null; then
+    # Write cron job in temporary file
+    CRON_JOB="*/5 * * * * cd ${APP_DIR} && python3 main.py"
+    echo "$CRON_JOB" > /tmp/cron_job
+
+    # Add job to crontab
+    crontab /tmp/cron_job
+    rm /tmp/cron_job
+
+    echo -e "[${Green}OK${Color_Off}] Scheduled main.py to run every 5 minutes using crontab."
+else
+    echo -e "[${Red}KO${Color_Off}] Failed to set up cron job for main.py. Crontab not found."
+fi
