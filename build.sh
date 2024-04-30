@@ -64,3 +64,16 @@ if ! command -v python3 &> /dev/null; then
 else
     echo -e "[${Green}OK${Color_Off}] Python3 already installed."
 fi
+
+APP_DIR=/app/cit
+
+# Setup project on a /app/project directory
+echo -e "${Yellow}[=================> APP_DIR creation <=================]${Color_Off}"
+
+if [ ! -d "$APP_DIR" ]; then
+    mkdir -p "$APP_DIR"
+    cp -r "$(dirname "$0")"/* "$APP_DIR"
+    echo -e "[${Green}OK${Color_Off}] Created ${APP_DIR} directory and copied files."
+else
+    echo -e "[${Green}OK${Color_Off}] ${APP_DIR} directory already exists."
+fi
