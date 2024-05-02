@@ -27,7 +27,6 @@ async def add_filter_elm(symbol: str):
         print(binance_response.content)
     except:
         raise HTTPException(status_code=500, detail='Unable to load ticker price')
-        return list_to_dict(filtered_items)
 
     try:
         conversion_request = "https://cdn.taux.live/api/latest.json"
@@ -35,7 +34,6 @@ async def add_filter_elm(symbol: str):
         convertion_rate = conversion_response.json()['rates']['EUR']
     except:
         raise HTTPException(status_code=500, detail='Unable to load conversion currency')
-        return list_to_dict(filtered_items)
 
     newItem: Item = Item()
     try:
