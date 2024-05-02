@@ -40,7 +40,6 @@ async def add_filter_elm(symbol: str):
     try:
         binance_request = "https://www.binance.com/api/v3/ticker/price?symbol=" + symbol
         binance_response = requests.get(binance_request)
-        print(binance_response.content)
     except:
         raise HTTPException(status_code=500, detail='Unable to load ticker price')
 
