@@ -14,7 +14,25 @@ filtered_items = []
 @router.get('/')
 async def get_filtered_elm():
   try:
-      return list_to_dict(filtered_items)
+    try:
+        binance_request = "https://www.binance.com/api/v3/ticker/price"
+        binance_response = requests.get(binance_request)
+    except:
+        raise HTTPException(status_code=500, detail='Unable to get ticker price')
+
+    try:
+        conversion_request = "https://cdn.taux.live/api/latest.json"
+        conversion_response = requests.get(conversion_request)
+        convertion_rate = conversion_response.json()['rates']['EUR']
+    except:
+       raise HTTPException(status_code=500, detail='Unable to load conversion currency')
+    
+    for elm in binance_response.json():
+        for filter_elm in filtered_items:
+            if (elm['symbol'] == filter_elm.symbol):
+                filter_elm.value_usd = elm['price']
+                filter_elm.value_eur = str(float(elm['price']) * float(convertion_rate))
+    return list_to_dict(filtered_items)
   except:
     raise HTTPException(status_code=500, detail='Unable to load filtered items')
 
