@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from models.item import Item
+from models.functions import list_to_dict
 import requests
 import json
 
@@ -17,13 +18,6 @@ async def get_filtered_elm():
   except:
     raise HTTPException(status_code=500, detail='Unable to load filtered items')
 
-def list_to_dict(items: list) -> dict:
-    dict_items = {}
-    i = 0
-    for item in items:
-        dict_items[i] = dict(item)
-        i = i + 1
-    return dict_items
 
 @router.post('/{symbol}', status_code=200)
 async def add_filter_elm(symbol: str):
