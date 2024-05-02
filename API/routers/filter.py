@@ -21,25 +21,39 @@ async def get_filtered_elm():
 
 @router.post('/{symbol}', status_code=200)
 async def add_filter_elm(symbol: str):
-
-    newItem: Item = Item()
-    newItem.symbol = symbol
-
     try:
         binance_request = "https://www.binance.com/api/v3/ticker/price?symbol=" + symbol
         binance_response = requests.get(binance_request)
         print(binance_response.content)
     except:
-        raise HTTPException(status_code=404, detail='Unknown symbol')
+        raise HTTPException(status_code=500, detail='Unable to load ticker price')
+        return list_to_dict(filtered_items)
 
     try:
         conversion_request = "https://cdn.taux.live/api/latest.json"
         conversion_response = requests.get(conversion_request)
+        convertion_rate = conversion_response.json()['rates']['EUR']
     except:
-       raise HTTPException(status_code=500, detail='Unable to load conversion currency')
+        raise HTTPException(status_code=500, detail='Unable to load conversion currency')
+        return list_to_dict(filtered_items)
+
+    newItem: Item = Item()
+    try:
+        newItem.symbol = binance_response.json()['symbol']
+    except:
+        raise HTTPException(status_code=404, detail='Unknown symbol')
+    newItem.value_usd = binance_response.json()['price']
+    newItem.value_eur = str(float(binance_response.json()['price']) * float(convertion_rate))
     
+    for elm in filtered_items:
+        if (elm.symbol == newItem.symbol):
+            elm.value_usd = newItem.value_usd
+            elm.value_eur = newItem.value_eur
+            return list_to_dict(filtered_items)        
+
     filtered_items.append(newItem)
     return list_to_dict(filtered_items)
+
 
 @router.delete('/{symbol}', status_code=200)
 async def remove_filter_elm(symbol: str):
