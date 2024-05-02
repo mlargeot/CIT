@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from models.item import Item
-from models.functions import list_to_dict
+from models.functions import list_to_dict, get_conversion_rate
 import requests
 import json
 
@@ -15,23 +15,21 @@ filtered_items = []
 async def get_filtered_elm():
   try:
     try:
-        binance_request = "https://www.binance.com/api/v3/ticker/price"
-        binance_response = requests.get(binance_request)
+        binance_response = requests.get("https://www.binance.com/api/v3/ticker/price")
     except:
         raise HTTPException(status_code=500, detail='Unable to get ticker price')
 
     try:
-        conversion_request = "https://cdn.taux.live/api/latest.json"
-        conversion_response = requests.get(conversion_request)
-        convertion_rate = conversion_response.json()['rates']['EUR']
+        conversion_rate = get_conversion_rate()
     except:
-       raise HTTPException(status_code=500, detail='Unable to load conversion currency')
-    
+        raise HTTPException(status_code=500, detail='Unable to load conversion currency')
+
     for elm in binance_response.json():
         for filter_elm in filtered_items:
             if (elm['symbol'] == filter_elm.symbol):
                 filter_elm.value_usd = elm['price']
-                filter_elm.value_eur = str(float(elm['price']) * float(convertion_rate))
+                filter_elm.value_eur = str(float(elm['price']) * float(conversion_rate))
+                continue
     return list_to_dict(filtered_items)
   except:
     raise HTTPException(status_code=500, detail='Unable to load filtered items')
@@ -47,19 +45,17 @@ async def add_filter_elm(symbol: str):
         raise HTTPException(status_code=500, detail='Unable to load ticker price')
 
     try:
-        conversion_request = "https://cdn.taux.live/api/latest.json"
-        conversion_response = requests.get(conversion_request)
-        convertion_rate = conversion_response.json()['rates']['EUR']
+        conversion_rate = get_conversion_rate()
     except:
         raise HTTPException(status_code=500, detail='Unable to load conversion currency')
-
-    newItem: Item = Item()
+    
+    newItem: Item = Item()    
     try:
         newItem.symbol = binance_response.json()['symbol']
     except:
         raise HTTPException(status_code=404, detail='Unknown symbol')
     newItem.value_usd = binance_response.json()['price']
-    newItem.value_eur = str(float(binance_response.json()['price']) * float(convertion_rate))
+    newItem.value_eur = str(float(binance_response.json()['price']) * float(conversion_rate))
     
     for elm in filtered_items:
         if (elm.symbol == newItem.symbol):

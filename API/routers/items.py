@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse
 from models.item import Item
-from models.functions import list_to_dict
+from models.functions import list_to_dict, get_conversion_rate
 import requests
 import json
 
@@ -13,15 +13,12 @@ items = []
 async def get_items():
 
     try:
-        binance_request = "https://www.binance.com/api/v3/ticker/price"
-        binance_response = requests.get(binance_request)
+        binance_response = requests.get("https://www.binance.com/api/v3/ticker/price")
     except:
         raise HTTPException(status_code=500, detail='Unable to get ticker price')
 
     try:
-        conversion_request = "https://cdn.taux.live/api/latest.json"
-        conversion_response = requests.get(conversion_request)
-        convertion_rate = conversion_response.json()['rates']['EUR']
+        convertion_rate = get_conversion_rate()
     except:
        raise HTTPException(status_code=500, detail='Unable to load conversion currency')
 
