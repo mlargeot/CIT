@@ -49,8 +49,8 @@ value_eur | The cryptocurrency price in € (EUR).
 
 #### \[GET\]
 
-**Request**: ```http://localhost:8000/api/items```
-**Response**:
+- **Request**: ```http://localhost:8000/api/items```
+- **Response**:
  - status-code: <200>
  - response content:
 ```javascript
