@@ -56,12 +56,12 @@ List all the items of the API.
     - response content: API items list
 ```javascript
 {
-    {
+    "0": {
         "symbol" : "ETHBTC",
         "value_eur" : "0.008562",
         "value_usd" : "0.007895"
     },
-    {
+    "1": {
         "symbol" : "BTCUSDT",
         "value_eur" : "55008.44",
         "value_usd" : "54444.44"
@@ -86,7 +86,7 @@ List all the filtered items of the API.
 *With elements in the filtered item list:*
 ```javascript
 {
-    {
+    "0": {
         "symbol" : "ETHBTC",
         "value_eur" : "0.008562",
         "value_usd" : "0.007895"
@@ -115,7 +115,7 @@ Add element to the filtered items list of the API.
 *After request with /filter/ETHBTC:*
 ```javascript
 {
-    {
+    "0": {
         "symbol" : "ETHBTC",
         "value_eur" : "0.008562",
         "value_usd" : "0.007895"
@@ -135,7 +135,7 @@ Remove element from the filtered items list of the API.
 *Before request:*
 ```javascript
 {
-    {
+    "0": {
         "symbol" : "ETHBTC",
         "value_eur" : "0.008562",
         "value_usd" : "0.007895"
