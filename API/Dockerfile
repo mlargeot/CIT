@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . /app
 
 # Python libraries installation
-RUN pip install fastapi uvicorn requests selenium beautifulsoup4
+RUN pip install fastapi uvicorn requests
 
 # Run of FastAPI with use of uvicorn
 CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
