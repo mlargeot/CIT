@@ -1,15 +1,37 @@
-# CIT Project:
+# CIT Project
 
-## Description:
+## Project Description
 
-The objective of this project is to create a program capable of updating a Google Excel sheet at 5-minute intervals with various cryptocurrencies and their respective values.
+The objective of this project is to create a program capable of updating a Google Excel sheet at 5-minute intervals with a list of choosen cryptocurrencies and their respective price in USDT and EUR.
 
-## Build:
+## Prerequisites
 
-To run this project, simply execute the bash script using the following command, ensuring you have execution rights:
+*Here will be all the information you have to know before using the project*
+
+## Build
+
+*This step should be done once you have met all the prerequisites.*
+
+To start this project, simply execute the bash script using the following command:
 
 ```sudo ./build.sh```
 
-Once the project is built, no additional steps are necessary; the project will run automatically upon machine startup.
+To see all the options allowed with this script, use:
 
-## Project architecture:
+```sudo ./build.sh --help```
+
+## CIT API
+
+### Overview
+
+The CIT API enables real-time retrieval of data for a variety of cryptocurrencies (Symbol, price in USDT, and price in EUR). The API also supports applying a filtering system to focus only on the cryptocurrencies of interest.
+
+### Authentication
+
+Since this API is currently running locally on the machine, no authentication is required by the API.
+
+### URI and Versioning
+
+I hope to improve the API over time. Actually the API don't use versioning maybe it will soon. This first iteration will have URIs prefixed with ```http://localhost:8000/api/``` and is structured as described below. There is currently no rate limit.
+
+One of the future additions to plan for would be adding a domain name and a database to enable accessing the API from outside the machine on which it is running.
