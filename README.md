@@ -42,7 +42,7 @@ All items have the following properties:
 
 Field | Description
 ------|------------
-**symbol** | The cryptocurrency symbol (Exmaple: Bitcoin -> BTCUSDT).
+**symbol** | The cryptocurrency symbol (Example: Bitcoin -> BTCUSDT).
 value_usd | The cryptocurrency price in $ (USDT).
 value_eur | The cryptocurrency price in € (EUR).
 
