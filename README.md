@@ -53,7 +53,7 @@ List all the items of the API.
 - **Request**: ```http://localhost:8000/api/items```
 - **Response**:
     - status-code: <200>
-    - response content:
+    - response content: API items list
 ```javascript
 {
     {
@@ -81,7 +81,7 @@ List all the filtered items of the API.
 - **Request**: ```http://localhost:8000/api/filter```
 - **Response**:
     - status-code: <200>
-    - response content:
+    - response content: API filtered items list
 
 *With elements in the filtered item list:*
 ```javascript
@@ -106,7 +106,7 @@ Add element to the filtered items list of the API.
 - **Request**: ```http://localhost:8000/api/filter/{symbol}```
 - **Response**:
     - status-code: <200>
-    - response content:
+    - response content: API filtered items list with new item
 
 *Before request:*
 ```javascript
@@ -130,7 +130,7 @@ Remove element from the filtered items list of the API.
 - **Request**: ```http://localhost:8000/api/filter/{symbol}```
 - **Response**:
     - status-code: <200>
-    - response content:
+    - response content:  API filtered items list without the item
 
 *Before request:*
 ```javascript
