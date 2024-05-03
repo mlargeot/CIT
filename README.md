@@ -42,7 +42,7 @@ All items have the following properties:
 
 Field | Description
 ------|------------
-**symbol** | The cryptocurrency symbol (Example: Bitcoin -> BTCUSDT).
+symbol | The cryptocurrency symbol (Example: Bitcoin -> BTCUSDT).
 value_usd | The cryptocurrency price in $ (USDT).
 value_eur | The cryptocurrency price in € (EUR).
 
@@ -95,6 +95,54 @@ List all the filtered items of the API.
 }
 ```
 *Without:*
+```javascript
+{}
+```
+
+#### \[POST\]
+
+Add element to the filtered items list of the API.
+
+- **Request**: ```http://localhost:8000/api/filter/{symbol}```
+- **Response**:
+    - status-code: <200>
+    - response content:
+
+*Before request:*
+```javascript
+{}
+```
+*After request with /filter/ETHBTC:*
+```javascript
+{
+    {
+        "symbol" : "ETHBTC",
+        "value_eur" : "0.008562",
+        "value_usd" : "0.007895"
+    },
+}
+```
+
+#### \[DELETE\]
+
+Remove element from the filtered items list of the API.
+
+- **Request**: ```http://localhost:8000/api/filter/{symbol}```
+- **Response**:
+    - status-code: <200>
+    - response content:
+
+*Before request:*
+```javascript
+{
+    {
+        "symbol" : "ETHBTC",
+        "value_eur" : "0.008562",
+        "value_usd" : "0.007895"
+    },
+}
+```
+*After request with /filter/ETHBTC:*
 ```javascript
 {}
 ```
