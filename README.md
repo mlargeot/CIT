@@ -7,7 +7,7 @@ The objective of this project is to create a program capable of updating a Googl
 ## Prerequisites
 
 *Here will be all the information you have to know before using the project*
-One of the future additions to plan for would be adding a domain name and a database to enable accessing the API from outside the machine on which it is running.
+
 ## Build
 
 *This step should be done once you have met all the prerequisites.*
