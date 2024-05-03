@@ -38,7 +38,6 @@ One of the future additions to plan for would be adding a domain name and a data
 
 ### Items
 
-List all the items of the API.
 All items have the following properties:
 
 Field | Description
@@ -49,6 +48,8 @@ value_eur | The cryptocurrency price in € (EUR).
 
 #### \[GET\]
 
+List all the items of the API.
+
 - **Request**: ```http://localhost:8000/api/items```
 - **Response**:
     - status-code: <200>
@@ -57,16 +58,42 @@ value_eur | The cryptocurrency price in € (EUR).
 {
     {
         "symbol" : "ETHBTC",
-        "value_usd" : "0.007895",
         "value_eur" : "0.008562"
+        "value_usd" : "0.007895",
     },
     {
         "symbol" : "BTCUSDT",
-        "value_usd" : "54444.44",
         "value_eur" : "55008.44"
+        "value_usd" : "54444.44",
     }
     ...
 }
 ```
 
 ### Filter
+
+The filtered items have the same properties as the items.
+
+#### \[GET\]
+
+List all the filtered items of the API.
+
+- **Request**: ```http://localhost:8000/api/filter```
+- **Response**:
+    - status-code: <200>
+    - response content:
+*With elements in the filtered item list:*
+```javascript
+{
+    {
+        "symbol" : "ETHBTC",
+        "value_eur" : "0.008562"
+        "value_usd" : "0.007895",
+    },
+    ...
+}
+```
+*Without:*
+```javascript
+{}
+```
