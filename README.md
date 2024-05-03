@@ -36,6 +36,10 @@ I hope to improve the API over time. Actually the API don't use versioning maybe
 
 One of the future additions to plan for would be adding a domain name and a database to enable accessing the API from outside the machine on which it is running.
 
+### Swagger
+
+To access the Swagger and test the API yourself, go to: ```http://localhost:8000/docs```
+
 ### Items
 
 All items have the following properties:
