@@ -1,7 +1,9 @@
+import os
 import sys
 import requests
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+from dotenv import load_dotenv
 
 def add_filter_elm(symbol: str) -> bool:
     try:
@@ -20,14 +22,20 @@ def del_filter_elm(symbol: str) -> bool:
     return True
 
 def update_excel() -> bool:
+        
     try:
-        scope = ['https://www.googleapis.com/auth/spreadsheets', "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
-        credentials = ServiceAccountCredentials.from_json_keyfile_name('./test.json', scope)
-        client = gspread.authorize(credentials)
-        google_sheet = client.open('Testsheet').sheet1
+        load_dotenv()
     except:
         return False
-    
+
+    try:
+        scope = ['https://www.googleapis.com/auth/spreadsheets', "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+        credentials = ServiceAccountCredentials.from_json_keyfile_name(os.getenv('CREDS_FILE'), scope)
+        client = gspread.authorize(credentials)
+        google_sheet = client.open(os.getenv('SHEET_NAME')).sheet1
+    except:
+        return False
+
     try:
         filter_content = requests.get('http://127.0.0.1:8000/api/filter/')
     except:
