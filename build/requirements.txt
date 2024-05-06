@@ -1,0 +1,4 @@
+pyhton-dotenv
+requests
+gspread
+oauth2client
