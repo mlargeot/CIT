@@ -1,4 +1,4 @@
-pyhton-dotenv
+python-dotenv
 requests
 gspread
 oauth2client

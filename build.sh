@@ -57,7 +57,7 @@ if [ "$DOWN" = true ]; then
         echo -e "[${Green}OK${Color_Off}] Docker containers stopped and removed."
 
         # Remove crontab entry for the script
-        crontab -l | grep -v "${APP_DIR}/main.py" | crontab -
+        crontab -l | grep -v "${APP_DIR}/src/main.py" | crontab -
         echo -e "[${Green}OK${Color_Off}] Removed crontab entry."
     else
         echo -e "[${Red}KO${Color_Off}] Project directory '/app/cit' not found."
@@ -86,22 +86,19 @@ if [ "$RUN" = true ]; then
     echo -e "${Yellow}[=================> Running Python Script <=================]${Color_Off}"
     APP_DIR="/app/cit"
     if [ -d "$APP_DIR" ]; then
-        cd "$APP_DIR"
-        if [ -f "main.py" ]; then
-            if [ "$ADD" != "" ]; then
-                python3 main.py add "$ADD"
-                echo -e "[${Green}OK${Color_Off}] Python script 'main.py' executed with 'add $ADD'."
-            elif [ "$DEL" != "" ]; then
-                python3 main.py del "$DEL"
-                echo -e "[${Green}OK${Color_Off}] Python script 'main.py' executed with 'del $DEL'."
-            else
-                python3 main.py
-                echo -e "[${Green}OK${Color_Off}] Python script 'main.py' executed."
-            fi
+        cd "$APP_DIR/src"
+        source venv/bin/activate
+        if [ "$ADD" != "" ]; then
+            python3 main.py add "$ADD"
+            echo -e "[${Green}OK${Color_Off}] Python script 'main.py' executed with 'add $ADD'."
+        elif [ "$DEL" != "" ]; then
+            python3 main.py del "$DEL"
+            echo -e "[${Green}OK${Color_Off}] Python script 'main.py' executed with 'del $DEL'."
         else
-            echo -e "[${Red}KO${Color_Off}] Python script 'main.py' not found in '$APP_DIR'."
-            exit 1
+            python3 main.py
+            echo -e "[${Green}OK${Color_Off}] Python script 'main.py' executed."
         fi
+        deactivate
     else
         echo -e "[${Red}KO${Color_Off}] Project directory '/app/cit' not found."
         exit 1
@@ -206,12 +203,22 @@ if [ "$DOWN" = false ] && [ "$REMOVE" = false ] && [ "$RUN" = false ]; then
         echo -e "[${Green}OK${Color_Off}] '$APP_DIR' directory already exists."
     fi
 
+    # Copy .env file to project directory
     if [ -f "$(dirname "$0")/.env" ]; then
+        cp "$(dirname "$0")/.env" "$APP_DIR/src"
         cp "$(dirname "$0")/.env" "$APP_DIR"
-        echo -e "[${Green}OK${Color_Off}] Copied .env file to '$APP_DIR'."
+        echo -e "[${Green}OK${Color_Off}] Copied .env file to '$APP_DIR/src' and '$APP_DIR'."
     else
         echo -e "[${Red}WARNING${Color_Off}] No .env file found in the source directory."
     fi
+
+    # Create virtual environment and install dependencies
+    echo -e "${Yellow}[=================> Creating Virtual Environment <=================]${Color_Off}"
+    cd "$APP_DIR/src" || exit 1
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r ../build/requirements.txt
+    deactivate
 
     echo -e "${Yellow}[=================> Building and Starting Docker Project <=================]${Color_Off}"
     cd "$APP_DIR"
@@ -229,7 +236,7 @@ if [ "$DOWN" = false ] && [ "$REMOVE" = false ] && [ "$RUN" = false ]; then
     echo -e "${Yellow}[=================> Setting up Cron Job for script <=================]${Color_Off}"
     if command -v crontab &> /dev/null; then
         # Write cron job in temporary file
-        CRON_JOB="*/5 * * * * cd ${APP_DIR} && python3 main.py"
+        CRON_JOB="*/5 * * * * cd ${APP_DIR}/src && source venv/bin/activate && python3 main.py"
         echo "$CRON_JOB" > /tmp/cron_job
 
         # Add job to crontab
