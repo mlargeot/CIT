@@ -6,7 +6,7 @@ The objective of this project is to create a program capable of updating a Googl
 
 ## Prerequisites
 
-*Here will be all the information you have to know before using the project*
+All documentation regarding the project setup and prerequisites is available at [Project setup](Doc/README.md).
 
 ## Build
 
