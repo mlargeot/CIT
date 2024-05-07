@@ -23,3 +23,13 @@ Click on the project tab at the top left corner of the screen (next to the googl
 Name it the way you want.
 
 ![Google console project name](img/project_name.png)
+
+Once the project is created, select this project.
+Now in the navigation menu, you will look for **API and services**
+
+![Google API & services](img/api_and_services.png)
+
+Click on ```Enable API and services```.
+You will look for ```Google drive API``` and ```Google sheet API```.
+
+Once enabled, you have to create a service account.
