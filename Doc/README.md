@@ -32,4 +32,12 @@ Now in the navigation menu, you will look for **API and services**
 Click on ```Enable API and services```.
 You will look for ```Google drive API``` and ```Google sheet API```.
 
-Once enabled, you have to create a service account.
+Once enabled, you have to create a service account to interact with your google sheet.
+Go to ```Credetials```:
+
+![Credentials](img/credentials.png)
+
+Then ```+ Create creadentials``` and select ```service account```:
+
+![Service account creation](img/service_account.png)
+
