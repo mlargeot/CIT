@@ -48,3 +48,11 @@ For the second step of the service account creation, select the ```Editor``` rol
 ![Service accoutn role](img/editor_role.png)
 
 (You can skip the third step)
+
+## Auth key & configuration file...
+
+Now that the service account is created, we need three more things:
+
+- Create an auth key
+- Download the configuration file
+- Set the service account as an editor of the Google Sheet
