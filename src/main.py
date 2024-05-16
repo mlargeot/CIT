@@ -56,7 +56,7 @@ def update_excel() -> bool:
         clear = True
         col = len(filter_content.json()) + 2
         while(clear):
-            if (google_sheet.cell(row, col).value == ''):
+            if (len(google_sheet.cell(row, col).value) == 0):
                 clear = False
             else:
                 google_sheet.update_cell(row, col, '')
