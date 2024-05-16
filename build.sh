@@ -219,6 +219,7 @@ if [ "$DOWN" = false ] && [ "$REMOVE" = false ] && [ "$RUN" = false ]; then
     source venv/bin/activate
     pip install -r ../build/requirements.txt
     deactivate
+    echo -e "[${Green}OK${Color_Off}] Venv setup."
 
     echo -e "${Yellow}[=================> Building and Starting Docker Project <=================]${Color_Off}"
     cd "$APP_DIR"
