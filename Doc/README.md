@@ -73,3 +73,9 @@ To set the service account as an editor of the Google Sheet, you need to open yo
 Now, go to your Google Sheet and share it with your service account, granting the account editor rights.
 
 ## .env file
+
+The last step to configure this project is to create ```.env``` file at the root of the project directory.
+
+![Env file example](img/env_file.png)
+
+Create these two exact environment variables and fill them with the name of your configuration file and the name of your Google Sheet.
