@@ -53,6 +53,17 @@ For the second step of the service account creation, select the ```Editor``` rol
 
 Now that the service account is created, we need three more things:
 
-- Create an auth key
-- Download the configuration file
+- Create an auth key & download the configuration file
 - Set the service account as an editor of the Google Sheet
+
+First, go to your service account details and navigate to the ```Key``` section:
+
+![Service account key](img/service_account_key.png)
+
+Now, create a key and select ```json``` extension:
+
+![Service account key](img/service_account_key_json.png)
+
+Once the configuration file is downloaded, you need to place this file into the ```src``` directory of this project. It is recommended to rename this file.
+
+## .env file
