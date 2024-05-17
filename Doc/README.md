@@ -79,3 +79,5 @@ The last step to configure this project is to create ```.env``` file at the root
 ![Env file example](img/env_file.png)
 
 Create these two exact environment variables and fill them with the name of your configuration file and the name of your Google Sheet.
+
+![Filled env file](img/filled_env.png)
