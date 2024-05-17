@@ -66,4 +66,10 @@ Now, create a key and select ```json``` extension:
 
 Once the configuration file is downloaded, you need to place this file into the ```src``` directory of this project. It is recommended to rename this file.
 
+To set the service account as an editor of the Google Sheet, you need to open your configuration file and look for the ```client_email```:
+
+![Service account mail](img/client_email.png)
+
+Now, go to your Google Sheet and share it with your service account, granting the account editor rights.
+
 ## .env file
