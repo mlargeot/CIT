@@ -21,50 +21,46 @@ def del_filter_elm(symbol: str) -> bool:
         return False
     return True
 
+def set_filter_to_map(filter_elms) -> list[list]:
+    elm_map = [[], [], []]
+    for elm in filter_elms:
+        elm_map[0].append(str(filter_elms[elm]['symbol']))
+        elm_map[1].append(float(filter_elms[elm]['value_usd']))
+        elm_map[2].append(float(filter_elms[elm]['value_eur']))
+    return elm_map
+
+
+def to_col(number):
+    letter = ''
+    while number > 26:
+        letter += chr(ord("A") + int((number - 1) / 26) - 1)
+        number = number - int((number - 1) / 26) * 26
+    letter += chr(ord("A") - 1 + number)
+    return letter
+
+
 def update_excel() -> bool:
-        
-    try:
-        load_dotenv()
-    except:
-        return False
 
-    try:
-        scope = ['https://www.googleapis.com/auth/spreadsheets', "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
-        credentials = ServiceAccountCredentials.from_json_keyfile_name(os.getenv('CREDS_FILE'), scope)
-        client = gspread.authorize(credentials)
-        google_sheet = client.open(os.getenv('SHEET_NAME')).sheet1
-    except:
-        return False
+    load_dotenv()
 
-    try:
-        filter_content = requests.get('http://127.0.0.1:8000/api/filter/')
-    except:
-        return False
+    scope = ['https://www.googleapis.com/auth/spreadsheets', "https://www.googleapis.com/auth/drive.file", "https://www.googleapis.com/auth/drive"]
+    credentials = ServiceAccountCredentials.from_json_keyfile_name(os.getenv('CREDS_FILE'), scope)
+    client = gspread.authorize(credentials)
+    google_sheet = client.open(os.getenv('SHEET_NAME')).sheet1
 
-    try:
-        col = 2
-        row = 2
-        for elm in filter_content.json():
-            google_sheet.update_cell(row, col, str(filter_content.json()[elm]['symbol']))
-            google_sheet.update_cell(row + 1, col, float(filter_content.json()[elm]['value_usd']))
-            google_sheet.update_cell(row + 2, col, float(filter_content.json()[elm]['value_eur']))
-            col += 1
-    except:
-        return False
+    filter_content = requests.get('http://127.0.0.1:8000/api/filter/')
 
-    try:
-        clear = True
-        col = len(filter_content.json()) + 2
-        while(clear):
-            if (len(google_sheet.cell(row, col).value) == 0):
-                clear = False
-            else:
-                google_sheet.update_cell(row, col, '')
-                google_sheet.update_cell(row + 1, col, '')
-                google_sheet.update_cell(row + 2, col, '')
-                col += 1
-    except:
-        return False
+    filter_map = set_filter_to_map(filter_content.json())
+
+    nb_symbol = len(filter_map[0]) + 1
+    letter = to_col(nb_symbol)
+    google_sheet.update(filter_map, f"B2:{letter}4")
+    
+    last_col = len(google_sheet.row_values(2))
+
+    if nb_symbol != last_col:
+        google_sheet.batch_clear([f"{to_col(nb_symbol + 1)}2:{to_col(last_col + 1)}4"])
+
     return True
 
 def main():
