@@ -57,8 +57,12 @@ if [ "$DOWN" = true ]; then
         echo -e "[${Green}OK${Color_Off}] Docker containers stopped and removed."
 
         # Remove crontab entry for the script
-        crontab -l | grep -v "${APP_DIR}/src/main.py" | crontab -
-        echo -e "[${Green}OK${Color_Off}] Removed crontab entry."
+        if crontab -l >/dev/null 2>&1; then
+            crontab -l | grep -v "/app/cit/src" | { cat; echo ""; } | crontab -
+            echo -e "[${Green}OK${Color_Off}] Removed crontab entry."
+        else
+            echo -e "[${Yellow}INFO${Color_Off}] No crontab for current user."
+        fi
     else
         echo -e "[${Red}KO${Color_Off}] Project directory '/app/cit' not found."
         exit 1
