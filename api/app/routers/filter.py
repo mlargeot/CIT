@@ -14,18 +14,10 @@ filtered_items = []
         '/',
         responses={
             status.HTTP_500_INTERNAL_SERVER_ERROR: {
-                "description": "Unable to load ticker price.",
+                "description": "Unable to load API data.",
                 "content": {"application/json": {
                     "example": {
                         "detail": "Unable to load ticker price."
-                    }
-                }}
-            },
-            status.HTTP_500_INTERNAL_SERVER_ERROR: {
-                "description": "Unable to load conversion currency.",
-                "content": {"application/json": {
-                    "example": {
-                        "detail": "Unable to load conversion currency."
                     }
                 }}
             }
@@ -65,18 +57,10 @@ async def get_filtered_elm() -> list[FilterItem]:
                 }}
             },
             status.HTTP_500_INTERNAL_SERVER_ERROR: {
-                "description": "Unable to load ticker price.",
+                "description": "Unable to load API data.",
                 "content": {"application/json": {
                     "example": {
                         "detail": "Unable to load ticker price."
-                    }
-                }}
-            },
-            status.HTTP_500_INTERNAL_SERVER_ERROR: {
-                "description": "Unable to load conversion currency.",
-                "content": {"application/json": {
-                    "example": {
-                        "detail": "Unable to load conversion currency."
                     }
                 }}
             }
@@ -116,7 +100,8 @@ async def add_filter_elm(symbol: str):
 
 @router.delete(
         '/{symbol}',
-        status_code=200
+        status_code=200,
+        response_model=list[FilterItem]
 )
 async def remove_filter_elm(symbol: str):
     global filtered_items
