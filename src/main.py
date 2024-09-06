@@ -24,9 +24,9 @@ def del_filter_elm(symbol: str) -> bool:
 def set_filter_to_map(filter_elms) -> list[list]:
     elm_map = [[], [], []]
     for elm in filter_elms:
-        elm_map[0].append(str(filter_elms[elm]['symbol']))
-        elm_map[1].append(float(filter_elms[elm]['value_usd']))
-        elm_map[2].append(float(filter_elms[elm]['value_eur']))
+        elm_map[0].append(str(elm['symbol']))
+        elm_map[1].append(float(elm['value_usd']))
+        elm_map[2].append(float(elm['value_eur']))
     return elm_map
 
 
