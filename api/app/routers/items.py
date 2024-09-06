@@ -1,16 +1,14 @@
-from fastapi import APIRouter, Depends, HTTPException
-from fastapi.responses import FileResponse
+from fastapi import APIRouter, HTTPException
 from ..models.item import Item
-from ..models.functions import list_to_dict, get_conversion_rate
+from ..models.functions import get_conversion_rate
 import requests
-import json
 
 router = APIRouter(prefix='/items')
 
 items = []
 
 @router.get('/', status_code=200)
-async def get_items():
+async def get_items() -> list[Item]:
 
     try:
         binance_response = requests.get("https://www.binance.com/api/v3/ticker/price")
@@ -32,4 +30,4 @@ async def get_items():
     except:
         raise HTTPException(status_code=500, detail='Error while loading json data')
 
-    return list_to_dict(items)
+    return items
