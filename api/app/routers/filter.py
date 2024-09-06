@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import FileResponse
 from pydantic import BaseModel
-from models.item import Item
-from models.functions import list_to_dict, get_conversion_rate
+from ..models.item   import Item
+from ..models.functions import list_to_dict, get_conversion_rate
 import requests
 import json
 

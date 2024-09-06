@@ -208,9 +208,8 @@ if [ "$DOWN" = false ] && [ "$REMOVE" = false ] && [ "$RUN" = false ]; then
     fi
 
     # Copy .env file to project directory
-    if [ -f "$(dirname "$0")/.env" ]; then
-        cp "$(dirname "$0")/.env" "$APP_DIR/src"
-        cp "$(dirname "$0")/.env" "$APP_DIR"
+    if [ -f "$(dirname "$0")/src/.env" ]; then
+        cp "$(dirname "$0")/src/.env" "$APP_DIR/src"
         echo -e "[${Green}OK${Color_Off}] Copied .env file to '$APP_DIR/src' and '$APP_DIR'."
     else
         echo -e "[${Red}WARNING${Color_Off}] No .env file found in the source directory."
@@ -221,7 +220,7 @@ if [ "$DOWN" = false ] && [ "$REMOVE" = false ] && [ "$RUN" = false ]; then
     cd "$APP_DIR/src" || exit 1
     python3 -m venv venv
     source venv/bin/activate
-    pip install -r ../build/requirements.txt
+    pip install -r ./requirements.txt
     deactivate
     echo -e "[${Green}OK${Color_Off}] Venv setup."
 
