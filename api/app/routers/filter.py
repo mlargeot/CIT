@@ -44,7 +44,7 @@ async def get_filtered_elm() -> list[FilterItem]:
     return filtered_items
 
 
-@router.post(       
+@router.post(
         '/{symbol}',
         status_code=201,
         responses={
@@ -64,7 +64,7 @@ async def get_filtered_elm() -> list[FilterItem]:
                     }
                 }}
             }
-        },              
+        },
         response_model=list[FilterItem]
 )
 async def add_filter_elm(symbol: str):
@@ -79,7 +79,7 @@ async def add_filter_elm(symbol: str):
     except:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unable to load conversion currency.")
     
-    newItem: FilterItem = FilterItem()    
+    newItem: FilterItem = FilterItem()
     try:
         newItem.symbol = binance_response.json()['symbol']
     except:
@@ -92,7 +92,7 @@ async def add_filter_elm(symbol: str):
         if (elm.symbol == newItem.symbol):
             elm.value_usd = newItem.value_usd
             elm.value_eur = newItem.value_eur
-            return filtered_items        
+            return filtered_items
 
     filtered_items.append(newItem)
     return filtered_items
