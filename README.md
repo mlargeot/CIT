@@ -109,7 +109,7 @@ Add element to the filtered items list of the API.
 
 - **Request**: ```http://localhost:8000/api/filter/{symbol}```
 - **Response**:
-    - status-code: <200>
+    - status-code: <201>
     - response content: API filtered items list with new item
 
 *Before request:*
