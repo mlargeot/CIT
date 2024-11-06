@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 from ..models.item   import  FilterItem
 from ..models.functions import get_conversion_rate
+from ..db import db
 import requests
 
 router = APIRouter(
@@ -24,7 +25,7 @@ filtered_items = []
         },
         response_model=list[FilterItem]
 )
-async def get_filtered_elm() -> list[FilterItem]:
+def get_filtered_elm() -> list[FilterItem]:
     try:
         binance_response = requests.get("https://www.binance.com/api/v3/ticker/price")
     except:
@@ -67,7 +68,9 @@ async def get_filtered_elm() -> list[FilterItem]:
         },
         response_model=list[FilterItem]
 )
-async def add_filter_elm(symbol: str):
+def add_filter_elm(symbol: str):
+    # TODO: LOAD FILTER LIST BASED ON DATABASE ELEMENTS
+
     try:
         binance_request = "https://www.binance.com/api/v3/ticker/price?symbol=" + symbol
         binance_response = requests.get(binance_request)
@@ -78,23 +81,32 @@ async def add_filter_elm(symbol: str):
         conversion_rate = get_conversion_rate()
     except:
         raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Unable to load conversion currency.")
-    
+
     newItem: FilterItem = FilterItem()
     try:
         newItem.symbol = binance_response.json()['symbol']
+        newItem.value_usd = binance_response.json()['price']
+        newItem.value_eur = str(float(binance_response.json()['price']) * float(conversion_rate))
     except:
         raise HTTPException(status_code=404, detail='Unknown symbol')
-    
-    newItem.value_usd = binance_response.json()['price']
-    newItem.value_eur = str(float(binance_response.json()['price']) * float(conversion_rate))
-    
-    for elm in filtered_items:
-        if (elm.symbol == newItem.symbol):
-            elm.value_usd = newItem.value_usd
-            elm.value_eur = newItem.value_eur
-            return filtered_items
 
-    filtered_items.append(newItem)
+    newItemDict = {
+        "symbol": newItem.symbol,
+        "value_usd": newItem.value_usd,
+        "value_eur": newItem.value_eur
+    }
+
+    result = db.filter.find_one_and_update(
+        {"symbol": newItem.symbol},
+        {"$set": newItemDict},
+        {"_id": False,
+         "symbol": True}
+    )
+
+    if result is None:
+        db.filter.insert_one(newItemDict)
+        filtered_items.append(newItem)
+
     return filtered_items
 
 
@@ -103,7 +115,7 @@ async def add_filter_elm(symbol: str):
         status_code=200,
         response_model=list[FilterItem]
 )
-async def remove_filter_elm(symbol: str):
+def remove_filter_elm(symbol: str):
     global filtered_items
     filtered_items = [item for item in filtered_items if item.symbol != symbol]
     return filtered_items
