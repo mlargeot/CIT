@@ -2,3 +2,4 @@ requests
 fastapi[standar]
 uvicorn
 pymongo
+python-dotenv
